@@ -5,7 +5,7 @@ import dagger.Component;
 /**
  * Created by NhanCao on 4/30/2015.
  */
-@Component
+@Component (modules = MainModule.class)
 public interface MainComponent {
     void inject(MainActivity mainActivity);
 

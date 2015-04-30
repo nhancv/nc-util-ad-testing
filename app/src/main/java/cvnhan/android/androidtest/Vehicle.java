@@ -1,7 +1,5 @@
 package cvnhan.android.androidtest;
 
-import javax.inject.Inject;
-
 import timber.log.Timber;
 
 /**
@@ -9,7 +7,6 @@ import timber.log.Timber;
  */
 public class Vehicle {
     private Motor motor;
-    @Inject
     public Vehicle(Motor motor){
         this.motor=motor;
     }

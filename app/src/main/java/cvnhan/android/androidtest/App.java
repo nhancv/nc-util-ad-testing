@@ -16,9 +16,7 @@ public class App extends Application{
         if(isDebug()){
             Timber.plant(new Timber.DebugTree());
         }
-        component=DaggerMainComponent.builder().build();
-
-
+        component=DaggerMainComponent.builder().mainModule(new MainModule()).build();
     }
     private boolean isDebug(){
         return BuildConfig.DEBUG;

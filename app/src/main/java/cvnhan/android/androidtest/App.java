@@ -9,14 +9,21 @@ import timber.log.Timber;
  */
 public class App extends Application{
 
+    private MainComponent component;
     @Override
     public void onCreate() {
         super.onCreate();
         if(isDebug()){
             Timber.plant(new Timber.DebugTree());
         }
+        component=DaggerMainComponent.builder().build();
+
+
     }
     private boolean isDebug(){
         return BuildConfig.DEBUG;
+    }
+    public MainComponent getComponent(){
+        return component;
     }
 }

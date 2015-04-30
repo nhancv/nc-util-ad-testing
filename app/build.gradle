@@ -1,13 +1,34 @@
-apply plugin: 'com.android.application'
+buildscript{
+    repositories{
+        jcenter()
+    }
+    dependencies{
+        classpath rootProject.ext.plugin.androidPlugin
+        classpath rootProject.ext.plugin.retroLambda
+        classpath rootProject.ext.plugin.androidApt
+    }
+}
 
+apply plugin: 'com.android.application'
+apply plugin: 'retrolambda'
+apply plugin: 'com.neenbedankt.android-apt'
 android {
-    compileSdkVersion 22
-    buildToolsVersion "21.1.2"
+    compileSdkVersion rootProject.ext.config.compileSdkVersion
+    buildToolsVersion rootProject.ext.config.buildToolsVersion
+
+    lintOptions{
+        abortOnError false
+    }
+    packagingOptions{
+        exclude 'LICENSE.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
+    }
 
     defaultConfig {
         applicationId "cvnhan.android.androidtest"
-        minSdkVersion 9
-        targetSdkVersion 22
+        minSdkVersion rootProject.ext.config.minSdkVersion
+        targetSdkVersion rootProject.ext.config.compileSdkVersion
         versionCode 1
         versionName "1.0"
     }
@@ -21,5 +42,31 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:22.0.0'
+    def dependency =rootProject.ext.dependency
+    compile dependency.appcompatv7
+
+    //Inject dependencies
+    compile dependency.dagger
+    apt dependency.daggerCompiler
+    provided dependency.generatedAnnotation
+
+    //View Inject dependencies
+    compile dependency.butterknife
+
+    //Log
+    compile dependency.timber
+
+    //RxAndroid
+    compile dependency.rxAndroid
+
+    //ImageLoader
+    compile dependency.picasso
+
+    compile dependency.otto
+}
+apt{
+    arguments{
+        resourcePackageName android.defaultConfig.applicationId
+        androidManifestFile variant.outputs[0].processResources.manifestFile
+    }
 }
